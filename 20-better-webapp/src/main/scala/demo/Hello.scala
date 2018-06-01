@@ -10,10 +10,22 @@ import scala.util.{Try, Failure, Success}
 import io.vertx.scala.ext.web.RoutingContext
 
 object Hello extends App {
-
   // do black magic here ...
+  implicit class BetterRoutingContext(val ctx : RoutingContext) {
+    def html(content : String) : Unit = {
+      ctx
+      .response()
+      .putHeader("content-type", "text/html;charset=UTF-8")
+      .end(content)
+    }
 
-
+    def json(content : JsonObject) : Unit = {
+      ctx
+      .response()
+      .putHeader("content-type", "application/json;charset=UTF-8")
+      .end(content.encodePrettily())                            
+    }
+  }
   // end of black magic
 
   val vertx = Vertx.vertx()
@@ -34,6 +46,4 @@ object Hello extends App {
 
   println(s"🌍 Listening on $httpPort  - Enjoy 😄")
   server.requestHandler(router.accept).listen(httpPort)
-
-
 }

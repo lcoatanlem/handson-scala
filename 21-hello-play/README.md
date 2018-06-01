@@ -6,7 +6,7 @@ Nous allons vous décrire son fonctionnement.
 
 ## Exercice
 
-Faire une API `divide` (ex `http://localhost:9000/42/2`)
+Faire une API `divide` (ex `http://localhost:9000/divide/42/2`)
 
 - ajoutez cette route dans `conf/routes`:
   ```

@@ -14,6 +14,16 @@ object Hello extends App {
 
   val httpPort = sys.env.getOrElse("PORT", "8080").toInt
 
+  def matcher(x : Any): Any = {
+    x match {
+      case Success(d) => d
+      case Failure(d) => {
+        println(s"Exception Occured => ${d.getMessage}")
+        s"No way you can divide by zero..."
+      }
+    }
+  }
+
   router.get("/hello").handler(context => 
     context
       .response()
@@ -29,7 +39,8 @@ object Hello extends App {
   )
 
   router.get("/divide/:a/:b").handler(context => {
-    val result = context.request.getParam("a").get.toInt / context.request.getParam("b").get.toInt
+    val result = matcher(Try(context.request.getParam("a").get.toInt
+                     / context.request.getParam("b").get.toInt))
     context
       .response()
       .putHeader("content-type", "application/json;charset=UTF-8")
